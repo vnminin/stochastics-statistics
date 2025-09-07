@@ -183,7 +183,8 @@ From Gani's"The Craft of Probabilistic Modelling", Springer 1986. p63
 ::: {.column width="15%"}
 <div style="text-align: center; font-size: 0.9em;">
 ![](images/prob_refresh/bailey.jpg){width=80%}
-Sewall Wrigth<br>1889--1988
+Norman T.J.
+Bailey<br>1923--2007
 </div>
 :::
 :::
