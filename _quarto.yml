@@ -1,0 +1,31 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Stochastic Processes: A Statistical Perspective"
+  author:  
+    - "Peter Guttorp"
+    - "Volodymyr M. Minin" 
+  date: "8/29/2025"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - prob_refresh.qmd
+    - stat_refresh.qmd
+    - dtmc_background.qmd
+    - dtmc_stat.qmd
+    - ctmc_background.qmd
+    - ctmc_stat.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+
+

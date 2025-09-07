@@ -1,0 +1,22 @@
+\usepackage{amsmath, amsthm, amssymb}
+
+\renewcommand{\underline}[1]{{\bf{#1}}}
+\newcommand{\cprob}[2]{\text{Pr}\left(#1 \,|\,#2\right)}
+\newcommand{\prob}[1]{\text{Pr}\left(#1 \right)}
+\newcommand{\cexpect}[4]{\text{E}\left#3 #1 \,|\,#2\right#4}
+\newcommand{\expect}[3]{\text{E}\left#2 #1 \right#3}
+
+\newcommand{\fder}[1]{\frac{d}{d #1}}
+\newcommand{\hder}[2]{\frac{d^{#2}}{d {#1}^{#2}}}
+\newcommand{\fpart}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\hpart}[2]{\frac{\partial^{#2}}{\partial {#1}^{#2}}}
+\newcommand{\iid}{\overset{\text{iid}}{\sim}}
+\newcommand{\indfun}[1]{1_{\{#1\}}}
+\newcommand{\notation}{\overset{\text{def}}{=}}
+\newcommand{\asarrow}{\overset{\text{a.s.}}{\rightarrow}}
+\newcommand{\parrow}{\overset{\text{P}}{\rightarrow}}
+\newcommand{\darrow}{\overset{\text{D}}{\rightarrow}}
+\newcommand{\mydef}{\overset{\text{def}}{=}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}

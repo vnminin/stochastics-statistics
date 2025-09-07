@@ -1,0 +1,286 @@
+# Introduction
+
+## Who may find these notes useful?
+
+One may ask a reasonable question: "Why do we need yet another set of lecture notes with a fairly elementary treatment, from a modern probability theory point of view, of stochastic processes?" 
+Indeed, there are already many books covering much of the material presented here. 
+Moreover, we have borrowed material from many of these excellent texts, as the reader will see in our bibliographic remarks at the end of each chapter.
+So why did Peter Guttorp feel the need to write his "Stochastic Modeling of Scientific Data" book in the 90s [@Guttorp1995] and why did we feel the need to update this book with these lecture notes?
+The answer lies in the second part of the title of our lecture notes: we would like to show how statisticians think about stochastic processes when we use them to answer scientific questions.
+
+Our statistical point of view differs from many standard expositions of stochastic modeling because we emphasize thinking about the data generating processes carefully and focusing on properties of stochastic models needed in order to fit these models to data.
+For example, long term behavior of stochastic processes are of less interest when observations generated from theses processes are availalbe only during a short period of time.
+Therefore, statisticians are more interested in transient bevavior of stochastic processes: transition probabilities of Markov processes, first passage times, etc. 
+Markov chain Monte Carlo algorithms offer one notable exception to this general rule.
+Emphasis on computationally relevant mathematical results is another feature of these notes. 
+A mathematical result is deemed computationally relevant if it allows us to compute a property of the stochastic process of interest with reasonable efficiency to be used inside statistical algorithms. 
+
+
+Our target audience is graduate students in Applied Mathematics, Computer Science, Engineering, and Statistics.
+In our classes, we also had many excellent mathematically prepared PhD students from Biological and Social Sciences who found the classes useful for their dissertation research.
+Most parts of these lecture notes follow the following structure:
+
+- We introduce a class of stochastic processes and demonstrate what natural phenomena can be modelded by this class of models.
+- Next, we describe how this class of stochastic processes can be "observed." In other words, if we model a natural phenomenon with a stochastic process, we would like to show what kind observations/measurements we can realistically expect to be available to learn about this natural phenomenon. 
+- We then demonstrate how to perform statistical inference with these types of data. This step usually inloves deriving the likelihood for the model and data in hand and devising a computationally feasible way to perform either maximum likelihood or Bayesian inference. 
+In some cases we also discusss non-likelihood-based inference. 
+
+We now introduce two stochastic models and pose mathematical and statistical questions that we would like the reader to be able to answer after mastering the material in these notes. 
+
+## Motivating Examples
+Our examples come from two disciplines with a long history of using stochastic models and developing statistical methods for fitting these models to data: population genetics and infectious disease dynamics. 
+If the reader wants to learn more about mathematical and statistical developments in these disciplines we recommend the following texts: [@EwensPopGenBook] and [@andersson2012stochastic].
+
+
+### Wright-Fisher model of genetic drift
+
+::: {.callout-tip icon=false appearance="minimal"}
+## Historical note <br><br>
+
+:::{.columns .box}
+::: {.column width="15%"}
+<div style="text-align: center; font-size: 0.9em;">
+![](images/prob_refresh/Youngronaldfisher2.JPG){width=80%}
+Ronald Fisher<br>1890–1962
+<!--public domain, author unknown, published in EU before 1923; wikipidia FonalFisher1912.jpg
+-->
+</div>
+:::
+::: {.column width="65%"}
+British statistician and geneticist Ronald Fisher and American geneticist 
+Sewall Wright, together with a British mathematical biologist, Jack Haldane, laid a foundation for what is now known as modern evolutionary synthesis --- a  theory that reconciled seeming discrepancies between Darwinian and Mendelian 
+schools of thought on evolution and natural selection. The Wright-Fisher model and its various modifications played a pivotal role in this synthesis.
+<!--
+HULTON-DUETHCH collection/corbis; Am. Philos. Soc. : Science photo library
+-->
+:::
+::: {.column width="15%"}
+<div style="text-align: center; font-size: 0.9em;">
+![](images/prob_refresh/Sewall_Wright.jpg){width=80%}
+Sewall Wrigth<br>1889--1988
+</div>
+:::
+:::
+:::
+Consider a population of $m$ individuals. All individuals are diploid, meaning that each member of the population carries two copies of 
+their chromosomes. Suppose we are interested in a particular "gene" on one of the chromosomes. Here, a "gene" is loosely defined as stretch 
+of DNA, not necessarily a protein coding region. Since our population is diploid, we have $2m$ genes in total. 
+Suppose that the gene under consideration has only two possible variants, called alleles in genetics: $A$ and $a$. Let $X_n$ be the number of $A$ alleles in the population at generation $n$. 
+We assume that there is no selection acting on our gene, so we are interested in random fluctuations of allele frequencies under neutrality. 
+We also assume that the population size stays constant and that individuals in the population mate at random with each other. Under all these assumptions, it is reasonable to postulate the following stochastic mechanism for changes in allele counts. During each reproductive cycle, the genes of the next generation are obtained by sampling with replacement genes from the previous generation. 
+To keep the population size constant, the number of samples is equal to $2m$.  Figure @fig-wright-fisher-diagram shows an example of such processes for a population of 5 individuals (10 genes) and 4 generations. This stochastic process is called the Wright-Fisher model in population genetics [@Fisher1930; @Wright1931]. 
+
+![Wright-Fisher model diagram. The plot shows five generations of the Wright-Fisher process in a population of 10 individuals. Each row represents alleles (circles) in a particular generation. Lines connecting circles denote sampling with replacement. The number of $A$ alleles for each generation is shown next to each row.](images/prob_refresh/wright-fisher.svg){width=60% #fig-wright-fisher-diagram}
+
+As we will see in later chapters, it is easy to simulate realizations of processes like the Wright-Fisher model. @fig-wright-fisher-paths shows three random trajectories of the Wright-Fisher model, each starting with its own value for the intial condition $X_0$. For these simulations, we set the population size to $m=50$ (100 genes) and evolved the system for 40 generations. 
+Notice that by construction, $X_n$ will eventually get absorbed into either $X_{\infty} =0$ or $X_{\infty} = 2m$. 
+However, after a finite number of generations it may end up with any value between 0 and $2m$.
+
+```{r}
+#| fig-cap: Three random realizations of the Wright-Fisher process, tracking the number of $A$ alleles for 40 generations.
+#| label: fig-wright-fisher-paths
+#| echo: false
+#| message: false
+#| warning: false
+#| out.width: 60%
+
+## returns Wright-Fisher probability of ending up with A allele 
+## after one random selection of a gene
+
+wf_binom_prob = function(current_state, gene_num, mut_prob1, mut_prob2){
+  return(current_state*(1-mut_prob2)/gene_num +
+         (1 - current_state/gene_num)*mut_prob1)
+}
+
+
+## returns the next state of the Wright-Fisher model with mutations
+
+get_next_state = function(current_state, gene_num, mut_prob1, mut_prob2){
+  return(rbinom(n=1, size=gene_num,
+                prob=wf_binom_prob(current_state,gene_num,
+                  mut_prob1,mut_prob2)))
+}
+
+
+## generates one realization of the Wright-Fisher Markov chain with mutations
+
+wright_fisher_path = function(num_steps, gene_num, mut_prob1, mut_prob2, start_state){
+  
+  current_state = start_state
+  markov_path = current_state
+
+  for (i in 1:num_steps){
+    current_state = get_next_state(current_state, gene_num,
+      mut_prob1, mut_prob2)
+      markov_path = c(markov_path,current_state)
+  }
+
+  return(markov_path)
+}
+
+set.seed(1979)
+
+generation_num = 40
+true_mut_prob = 0
+my_gene_num = 100
+
+my_path1 = wright_fisher_path(generation_num, my_gene_num, true_mut_prob, true_mut_prob, 20)
+  
+my_path2 = wright_fisher_path(generation_num, my_gene_num, true_mut_prob, true_mut_prob, 60)  
+  
+my_path3 = wright_fisher_path(generation_num, my_gene_num, true_mut_prob, true_mut_prob, 45)  
+
+## plot my_path using ggplot 
+
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+# Combine paths into a data frame for ggplot
+df <- data.frame(
+  Generation = rep(0:generation_num, 3),
+  A_alleles = c(my_path1, my_path2, my_path3),
+  Path = factor(rep(c("Path 1", "Path 2", "Path 3"), each = generation_num + 1))
+)
+
+# Plot using ggplot2
+ggplot(df, aes(x = Generation, y = A_alleles, color = Path)) +
+  geom_line(size = 1.2) +
+  labs(x = "Generations", y = "Number of A alleles", title = "Wright-Fisher Paths") +
+  theme_minimal(base_size = 14) + 
+  theme(legend.position = "none") + 
+  ylim(0, my_gene_num)
+```
+
+ Using tools from stochastic modeling, we would like to answer the following questions:
+
+  - What is the probability that $X_n$ get absorbed in $X_{\infty} =0$ vs. $X_{\infty} = 2m$?
+  - How quickly (in how many steps) does the absorption occur?
+  - How can we extend this model to achieve non-trivial allele frequencies ($0 < X_{\infty} < 2m$) in the population at equilibrium?
+
+
+### Susceptible-Infected-Recovered (SIR) epidemic model
+
+::: {.callout-tip icon=false appearance="minimal"}
+## Historical note <br><br>
+
+:::{.columns .box}
+::: {.column width="15%"}
+<div style="text-align: center; font-size: 0.9em;">
+![](images/prob_refresh/mckendrick.gif){width=80%}
+Anderson Gray<br>McKendrick<br>1876-1943
+<!--http://www.york.ac.uk/depts/maths/histstat/people/mckendrick.gif From p. 323 in C C Heyde and E Seneta, Statisticians of the Centuries, New York: Springer-Verlag 2001
+-->
+</div>
+:::
+::: {.column width="65%"}
+In 1766 the Swiss mathematician and physicist Daniel Bernolli used mathematics to argue for the benefits of vaccination against smallpox. Anderson Gray McKendrick was a Scottish army officer, director of the Pasteur Institute 1920-1926, and after that superintendent of the Royal College of Physicians' laboratory, Edinburgh. In 1914 he published the first account of a pure birth process. His 1926 DSc dissertation at Aberdeen was entitled "Applications of mathematics to medical problems" and 
+may be the first stochastic model  of an epidemic (although @Bailey1986 mentions a probabilistic model by an Estonian physician named En'ko in 1889). 
+<!--
+From Gani's"The Craft of Probabilistic Modelling", Springer 1986. p63
+-->
+:::
+::: {.column width="15%"}
+<div style="text-align: center; font-size: 0.9em;">
+![](images/prob_refresh/bailey.jpg){width=80%}
+Sewall Wrigth<br>1889--1988
+</div>
+:::
+:::
+The modern stochastic epidemic theory was essentially created by Norman T. J. Bailey, an English statistician who spent most of his career at Oxford and the World Health Organization in Geneva [@armitage2009].
+:::
+
+
+
+Consider a population of $N$ individuals. Let $I_t$ be the number of individuals infected with a pathogen (e.g., influenza virus), $S_t$ be the number of susceptible individuals, and 
+$R_t$ be the number of recovered or removed invividuals.
+ 
+Assuming that infected individuals become infected immediately once infected and setting an initial condition for the system (e.g., $I_0=1$, $S_0= N-1$, and $R_t=0$), we would like to model the state of the epidemic, $(I_t, S_t, R_t)$ as a continuous-time stochastic process. We further assume that recovered individuals stay recovered forever, the system is closed and that the population size stays constant: $I_t  + S_t + R_t = N$. This model is called an SIR model in infectious disease epidemiology.    
+
+![SIR model cartoon. The plot shows 4 times points (not necessarily evenly spaced) during an epidemic in the population with 10 individuals. 
+Susceptible individuals are shown in blue, infectious individuals are shown in red, and recovered individuals are shown in black.](images/prob_refresh/sir_stick_figures.svg){width=50% #fig-sir-diagram}
+
+
+We are interested in answering the following questions:
+
+- How to define this Markov process so it can produce reasonable stochastic behavior of an epidemic in a closed population? 
+- What is the distribution of the total number of individuals that become infected during the course of the epidemic?
+- What is the probability that all individuals in the population become infected?
+- How can we infer parameters of the SIR model given partial information about infected/uninfected status of individuals in the populations?
+- How do we make forecasts about progression of the epidemic given noisy data during the initial stage of the epidemic?
+
+Notice that the last two questions usually fall outside of the scope of a typical book on applied probability and/or stochastic processes. 
+Our exposition of stochastic processes is different in that
+we are primarily interested in applications of stochastic processes to data analyses arising in sciences.
+
+ 
+```{r}
+#| fig-cap: Three random realizations of the Susceptible-Infectious-Recovered (SIR) stochastic epidemic model.
+#| echo: false
+#| message: false
+#| warning: false
+#| out.width: 70%
+
+## function to simulate SIR paths
+simulateSIR = function(beta, alpha, init_susceptible, init_infected, total_time){
+  current_susceptible = my_susceptible = init_susceptible
+  current_infected = my_infected = init_infected
+  current_time = my_times = 0
+
+  waiting_time = rexp(1, beta*current_infected*current_susceptible + alpha*current_infected)
+  current_time = current_time + waiting_time
+
+  while ((current_time < total_time) & (current_infected !=0)){
+    my_move = sample(1:2, size=1, prob = c(beta*current_infected*current_susceptible, alpha*current_infected))
+    if (my_move == 1){
+      current_infected = current_infected + 1
+      current_susceptible = current_susceptible - 1
+      my_susceptible = c(my_susceptible, current_susceptible)
+      my_infected = c(my_infected, current_infected)
+    }else{
+      current_infected = current_infected - 1
+      my_susceptible = c(my_susceptible, current_susceptible)
+      my_infected = c(my_infected, current_infected)
+    }
+    my_times = c(my_times, current_time)
+    if (current_infected !=0){
+      waiting_time = rexp(1, beta*current_infected*current_susceptible + alpha*current_infected)
+    }
+    current_time = current_time + waiting_time
+  }
+  my_susceptible = c(my_susceptible, current_susceptible)
+  my_infected = c(my_infected, current_infected)
+  my_times = c(my_times, total_time)
+  data.frame(
+    S = my_susceptible,
+    I = my_infected,
+    R = init_susceptible + init_infected - my_susceptible - my_infected,
+    time = my_times
+  )
+}
+
+set.seed(2016)
+num_realizations = 3
+sir_sim = lapply(1:num_realizations, function(i)
+  simulateSIR(beta=0.08, alpha=1.5, init_susceptible = 99, init_infected=1, total_time = 4) %>%
+    mutate(Realization = paste("Path", i))
+)
+
+sir_long = bind_rows(sir_sim) %>%
+  pivot_longer(cols = c(S, I, R), names_to = "Compartment", values_to = "Count") %>%
+  mutate(Compartment = factor(Compartment, levels = c("S", "I", "R")))
+
+ggplot(sir_long, aes(x = time, y = Count, color = Compartment, linetype = Realization)) +
+  geom_step(size = 1.1) +
+  scale_color_manual(values = c(S = "blue", I = "red", R = "black")) +
+  labs(x = "Time", y = "Number of Individuals") +
+  theme_minimal(base_size = 14) +
+  theme(legend.title = element_blank()) +
+  ylim(0, 100)
+```
+
+
+
+<!-- 
+## Our recommendations for using these lecture notes in teaching
+-->
