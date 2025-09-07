@@ -1,0 +1,112 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Stochastic Processes: A Statistical Perspective",
+    "section": "",
+    "text": "Preface\nThese lecture notes took shape when the authors taught a sequence of graduate courses “Stochastic Modeling of Scientific Data I and II” in the Department of Statistics at the University of Washington, Seattle. Peter Guttorp developed these courses during 1980s when he joined UW Statistics as an Assistant Professor. Peter used his lecture notes as a basis for his book that shares the name with the aforementioned courses (Guttorp 1995). After 30+ years this book remains among very few texts that blend statistical inference with a wide range of stochastic processes rather than focusing on a specific class of such procecesses (e.g., hidden Markov models or Gaussian processes). The UW stochastic modeling courses evolved further when Julian Besag stated teaching them with Peter Guttorp. When Julian retired in 2007, he kindly passed his notes to Volodymyr Minin, who used them and Peter’s book as a basis for his lecture notes. Zaid Harchaoui, Hari Narayanan, and Jon Wakefied taught stochastic modeling course using these notes and helped to weed out mistakes and inconsistencies in them. At some point, we (Peter and Volodymyr) started working on converting these notes into the second edition of Peter’s “Stochastic Modeling of Scientific Data” book, but later decided to put this project on pause and self publish these lecture notes instead.\n\n\n\n\nGuttorp, P. 1995. Stochastic Modeling of Scientific Data. Suffolk, Great Britain: Chapman & Hall.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "1.1 Who may find these notes useful?\nOne may ask a reasonable question: “Why do we need yet another set of lecture notes with a fairly elementary treatment, from a modern probability theory point of view, of stochastic processes?” Indeed, there are already many books covering much of the material presented here. Moreover, we have borrowed material from many of these excellent texts, as the reader will see in our bibliographic remarks at the end of each chapter. So why did Peter Guttorp feel the need to write his “Stochastic Modeling of Scientific Data” book in the 90s (Guttorp 1995) and why did we feel the need to update this book with these lecture notes? The answer lies in the second part of the title of our lecture notes: we would like to show how statisticians think about stochastic processes when we use them to answer scientific questions.\nOur statistical point of view differs from many standard expositions of stochastic modeling because we emphasize thinking about the data generating processes carefully and focusing on properties of stochastic models needed in order to fit these models to data. For example, long term behavior of stochastic processes are of less interest when observations generated from theses processes are availalbe only during a short period of time. Therefore, statisticians are more interested in transient bevavior of stochastic processes: transition probabilities of Markov processes, first passage times, etc. Markov chain Monte Carlo algorithms offer one notable exception to this general rule. Emphasis on computationally relevant mathematical results is another feature of these notes. A mathematical result is deemed computationally relevant if it allows us to compute a property of the stochastic process of interest with reasonable efficiency to be used inside statistical algorithms.\nOur target audience is graduate students in Applied Mathematics, Computer Science, Engineering, and Statistics. In our classes, we also had many excellent mathematically prepared PhD students from Biological and Social Sciences who found the classes useful for their dissertation research. Most parts of these lecture notes follow the following structure:\nWe now introduce two stochastic models and pose mathematical and statistical questions that we would like the reader to be able to answer after mastering the material in these notes.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#who-may-find-these-notes-useful",
+    "href": "intro.html#who-may-find-these-notes-useful",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "We introduce a class of stochastic processes and demonstrate what natural phenomena can be modelded by this class of models.\nNext, we describe how this class of stochastic processes can be “observed.” In other words, if we model a natural phenomenon with a stochastic process, we would like to show what kind observations/measurements we can realistically expect to be available to learn about this natural phenomenon.\nWe then demonstrate how to perform statistical inference with these types of data. This step usually inloves deriving the likelihood for the model and data in hand and devising a computationally feasible way to perform either maximum likelihood or Bayesian inference. In some cases we also discusss non-likelihood-based inference.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#motivating-examples",
+    "href": "intro.html#motivating-examples",
+    "title": "1  Introduction",
+    "section": "1.2 Motivating Examples",
+    "text": "1.2 Motivating Examples\nOur examples come from two disciplines with a long history of using stochastic models and developing statistical methods for fitting these models to data: population genetics and infectious disease dynamics. If the reader wants to learn more about mathematical and statistical developments in these disciplines we recommend the following texts: (Ewens 2004) and (Andersson and Britton 2012).\n\n1.2.1 Wright-Fisher model of genetic drift\n\n\n\n\n\n\nHistorical note \n\n\n\n\n\n\n Ronald Fisher1890–1962 \n\n\nBritish statistician and geneticist Ronald Fisher and American geneticist Sewall Wright, together with a British mathematical biologist, Jack Haldane, laid a foundation for what is now known as modern evolutionary synthesis — a theory that reconciled seeming discrepancies between Darwinian and Mendelian schools of thought on evolution and natural selection. The Wright-Fisher model and its various modifications played a pivotal role in this synthesis. \n\n\n Sewall Wrigth1889–1988\n\n\n\n\n\nConsider a population of \\(m\\) individuals. All individuals are diploid, meaning that each member of the population carries two copies of their chromosomes. Suppose we are interested in a particular “gene” on one of the chromosomes. Here, a “gene” is loosely defined as stretch of DNA, not necessarily a protein coding region. Since our population is diploid, we have \\(2m\\) genes in total. Suppose that the gene under consideration has only two possible variants, called alleles in genetics: \\(A\\) and \\(a\\). Let \\(X_n\\) be the number of \\(A\\) alleles in the population at generation \\(n\\). We assume that there is no selection acting on our gene, so we are interested in random fluctuations of allele frequencies under neutrality. We also assume that the population size stays constant and that individuals in the population mate at random with each other. Under all these assumptions, it is reasonable to postulate the following stochastic mechanism for changes in allele counts. During each reproductive cycle, the genes of the next generation are obtained by sampling with replacement genes from the previous generation. To keep the population size constant, the number of samples is equal to \\(2m\\). Figure Figure 1.1 shows an example of such processes for a population of 5 individuals (10 genes) and 4 generations. This stochastic process is called the Wright-Fisher model in population genetics (Fisher 1930; Wright 1931).\n\n\n\n\n\n\nFigure 1.1: Wright-Fisher model diagram. The plot shows five generations of the Wright-Fisher process in a population of 10 individuals. Each row represents alleles (circles) in a particular generation. Lines connecting circles denote sampling with replacement. The number of \\(A\\) alleles for each generation is shown next to each row.\n\n\n\nAs we will see in later chapters, it is easy to simulate realizations of processes like the Wright-Fisher model. Figure 1.2 shows three random trajectories of the Wright-Fisher model, each starting with its own value for the intial condition \\(X_0\\). For these simulations, we set the population size to \\(m=50\\) (100 genes) and evolved the system for 40 generations. Notice that by construction, \\(X_n\\) will eventually get absorbed into either \\(X_{\\infty} =0\\) or \\(X_{\\infty} = 2m\\). However, after a finite number of generations it may end up with any value between 0 and \\(2m\\).\n\n\n\n\n\n\n\n\nFigure 1.2: Three random realizations of the Wright-Fisher process, tracking the number of \\(A\\) alleles for 40 generations.\n\n\n\n\n\nUsing tools from stochastic modeling, we would like to answer the following questions:\n\nWhat is the probability that \\(X_n\\) get absorbed in \\(X_{\\infty} =0\\) vs. \\(X_{\\infty} = 2m\\)?\nHow quickly (in how many steps) does the absorption occur?\nHow can we extend this model to achieve non-trivial allele frequencies (\\(0 &lt; X_{\\infty} &lt; 2m\\)) in the population at equilibrium?\n\n\n\n1.2.2 Susceptible-Infected-Recovered (SIR) epidemic model\n\n\n\n\n\n\nHistorical note \n\n\n\n\n\n\n Anderson GrayMcKendrick1876-1943 \n\n\nIn 1766 the Swiss mathematician and physicist Daniel Bernolli used mathematics to argue for the benefits of vaccination against smallpox. Anderson Gray McKendrick was a Scottish army officer, director of the Pasteur Institute 1920-1926, and after that superintendent of the Royal College of Physicians’ laboratory, Edinburgh. In 1914 he published the first account of a pure birth process. His 1926 DSc dissertation at Aberdeen was entitled “Applications of mathematics to medical problems” and may be the first stochastic model of an epidemic (although Bailey (1986) mentions a probabilistic model by an Estonian physician named En’ko in 1889). \n\n\n Sewall Wrigth1889–1988\n\n\n\nThe modern stochastic epidemic theory was essentially created by Norman T. J. Bailey, an English statistician who spent most of his career at Oxford and the World Health Organization in Geneva (Armitage and Bithell 2009).\n\n\nConsider a population of \\(N\\) individuals. Let \\(I_t\\) be the number of individuals infected with a pathogen (e.g., influenza virus), \\(S_t\\) be the number of susceptible individuals, and \\(R_t\\) be the number of recovered or removed invividuals.\nAssuming that infected individuals become infected immediately once infected and setting an initial condition for the system (e.g., \\(I_0=1\\), \\(S_0= N-1\\), and \\(R_t=0\\)), we would like to model the state of the epidemic, \\((I_t, S_t, R_t)\\) as a continuous-time stochastic process. We further assume that recovered individuals stay recovered forever, the system is closed and that the population size stays constant: \\(I_t  + S_t + R_t = N\\). This model is called an SIR model in infectious disease epidemiology.\n\n\n\n\n\n\nFigure 1.3: SIR model cartoon. The plot shows 4 times points (not necessarily evenly spaced) during an epidemic in the population with 10 individuals. Susceptible individuals are shown in blue, infectious individuals are shown in red, and recovered individuals are shown in black.\n\n\n\nWe are interested in answering the following questions:\n\nHow to define this Markov process so it can produce reasonable stochastic behavior of an epidemic in a closed population?\nWhat is the distribution of the total number of individuals that become infected during the course of the epidemic?\nWhat is the probability that all individuals in the population become infected?\nHow can we infer parameters of the SIR model given partial information about infected/uninfected status of individuals in the populations?\nHow do we make forecasts about progression of the epidemic given noisy data during the initial stage of the epidemic?\n\nNotice that the last two questions usually fall outside of the scope of a typical book on applied probability and/or stochastic processes. Our exposition of stochastic processes is different in that we are primarily interested in applications of stochastic processes to data analyses arising in sciences.\n\n\n\n\n\nThree random realizations of the Susceptible-Infectious-Recovered (SIR) stochastic epidemic model.\n\n\n\n\n\n\n\n\n\nAndersson, H., and T. Britton. 2012. Stochastic Epidemic Models and Their Statistical Analysis. Vol. 151. Springer Science & Business Media.\n\n\nArmitage, P., and J. F. Bithell. 2009. “Norman Thomas John Bailey, 1923–2007.” Journal of the Royal Statistical Society Series A: Statistics in Society 172 (3): 689–90.\n\n\nBailey, J. 1986. “An Improbable Path.” In The Craft of Probabilistic Modeling: A Collection of Personal Accounts, edited by J. Gani, 64–87. Berlin: Springer-Verlag.\n\n\nEwens, W. J. 2004. Mathematical Population Genetics. 2nd ed. New York: Springer.\n\n\nFisher, R. A. 1930. The Genetical Theory of Natural Selection. Oxford: Clarendon Press.\n\n\nGuttorp, P. 1995. Stochastic Modeling of Scientific Data. Suffolk, Great Britain: Chapman & Hall.\n\n\nWright, S. 1931. “Evolution in Mendelian Populations.” Genetics 16: 97–159.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "prob_refresh.html#footnotes",
+    "href": "prob_refresh.html#footnotes",
+    "title": "2  Probability Refresher",
+    "section": "",
+    "text": "We use the term state space, which is frequently used in stochastic processes theory. In probability textbooks the term sample space is more common.↩︎",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Probability Refresher</span>"
+    ]
+  },
+  {
+    "objectID": "stat_refresh.html",
+    "href": "stat_refresh.html",
+    "title": "3  Statistics Refresher",
+    "section": "",
+    "text": "Under construction, but coming online soon.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Statistics Refresher</span>"
+    ]
+  },
+  {
+    "objectID": "dtmc_background.html",
+    "href": "dtmc_background.html",
+    "title": "4  Discrete-Time Markov Chain Background",
+    "section": "",
+    "text": "Under construction, but coming online soon.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Discrete-Time Markov Chain Background</span>"
+    ]
+  },
+  {
+    "objectID": "dtmc_stat.html",
+    "href": "dtmc_stat.html",
+    "title": "5  Statistical Inference for Discrete-Time Markov Chains",
+    "section": "",
+    "text": "Under construction, but coming online soon.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Statistical Inference for Discrete-Time Markov Chains</span>"
+    ]
+  },
+  {
+    "objectID": "ctmc_background.html",
+    "href": "ctmc_background.html",
+    "title": "6  Continuous-Time Markov Chain Background",
+    "section": "",
+    "text": "Under construction, but coming online soon.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Continuous-Time Markov Chain Background</span>"
+    ]
+  },
+  {
+    "objectID": "ctmc_stat.html",
+    "href": "ctmc_stat.html",
+    "title": "7  Statistical Inference for Continuous-Time Markov Chains",
+    "section": "",
+    "text": "Under construction, but coming online soon.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Statistical Inference for Continuous-Time Markov Chains</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Andersson, H., and T. Britton. 2012. Stochastic Epidemic Models and\nTheir Statistical Analysis. Vol. 151. Springer Science &\nBusiness Media.\n\n\nArmitage, P., and J. F. Bithell. 2009. “Norman Thomas John Bailey,\n1923–2007.” Journal of the Royal Statistical Society Series\nA: Statistics in Society 172 (3): 689–90.\n\n\nBailey, J. 1986. “An Improbable Path.” In The Craft of\nProbabilistic Modeling: A Collection of Personal Accounts, edited\nby J. Gani, 64–87. Berlin: Springer-Verlag.\n\n\nDurret, R. 2004. Probability: Theory and Examples. Third.\nDuxbury Press.\n\n\nEwens, W. J. 2004. Mathematical Population Genetics. 2nd ed.\nNew York: Springer.\n\n\nFisher, R. A. 1930. The Genetical Theory of Natural Selection.\nOxford: Clarendon Press.\n\n\nGuttorp, P. 1995. Stochastic Modeling of Scientific Data.\nSuffolk, Great Britain: Chapman & Hall.\n\n\nWright, S. 1931. “Evolution in Mendelian Populations.”\nGenetics 16: 97–159.",
+    "crumbs": [
+      "References"
+    ]
+  }
+]
