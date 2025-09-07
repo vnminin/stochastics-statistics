@@ -5,3 +5,7 @@ Peter Guttorp developed these courses during 1980s when he joined UW Statistics 
 After 30+ years this book remains among very few texts that blend statistical inference with a wide range of stochastic processes rather than focusing on a specific class of such procecesses (e.g., hidden Markov models or Gaussian processes). 
 The UW stochastic modeling courses evolved further when Julian Besag stated teaching them with Peter Guttorp. When Julian retired in 2007, he kindly passed his notes to Volodymyr Minin, who used them and Peter's book as a basis for his lecture notes. 
 Zaid Harchaoui, Hari Narayanan, and Jon Wakefied taught stochastic modeling course using these notes and helped to weed out mistakes and inconsistencies in them. At some point, we (Peter and Volodymyr) started working on converting these notes into the second edition of Peter's "Stochastic Modeling of Scientific Data" book, but later decided to put this project on pause and self publish these lecture notes instead.
+
+# License
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
