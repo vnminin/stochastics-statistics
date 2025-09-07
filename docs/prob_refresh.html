@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -50,7 +84,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./stat_refresh.html" rel="next">
+<link href="./dtmc_background.html" rel="next">
 <link href="./intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -175,14 +209,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./stat_refresh.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Refresher</span></span></a>
+  <a href="./dtmc_background.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete-Time Markov Chain Background</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dtmc_background.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete-Time Markov Chain Background</span></span></a>
+  <a href="./stat_refresh.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Statistics Refresher</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -214,8 +248,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#events-probabilities-and-random-variables" id="toc-events-probabilities-and-random-variables" class="nav-link active" data-scroll-target="#events-probabilities-and-random-variables"><span class="header-section-number">2.1</span> Events, Probabilities, and Random Variables</a></li>
+  <li><a href="#expectations" id="toc-expectations" class="nav-link" data-scroll-target="#expectations"><span class="header-section-number">2.2</span> Expectations</a></li>
+  <li><a href="#limit-theorems" id="toc-limit-theorems" class="nav-link" data-scroll-target="#limit-theorems"><span class="header-section-number">2.3</span> Limit Theorems</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -239,9 +281,11 @@ window.Quarto = {
 </header>
 
 
-<p>Here, we review some probability concepts that will be used repeatedly in the subsequent chapters. Material here succinctly covers what students typically see in a mathematically rigorous class on probability theory. In US, such classes are usually offered by Mathematics and Statistics departments.</p>
-<p>We assume that we can assign probabilities to <em>events</em> — outcomes of a random experiment. For example, tossing a coin results in one of two possible events: H =<code>heads" and T=</code>tails.” More formally, we define <em>events</em> as certain subsets of some abstract space.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<p>Here, we review some probability concepts that will be used repeatedly in the subsequent chapters. Material here succinctly covers what students typically see in a mathematically rigorous class on probability theory.</p>
+<section id="events-probabilities-and-random-variables" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="events-probabilities-and-random-variables"><span class="header-section-number">2.1</span> Events, Probabilities, and Random Variables</h2>
+<p>We assume that we can assign probabilities to <em>events</em> — outcomes of a random experiment. For example, tossing a coin results in one of two possible events: H =“heads” and T=“tails.” More formally, we define <strong>events</strong> as certain subsets of some abstract space.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -251,11 +295,11 @@ Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The <em>state space</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math inline">\(\Omega\)</span> is a collection of all possible outcomes of a random experiment.</p>
+<p>The **s*tate space**<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math inline">\(\Omega\)</span> is a collection of all possible outcomes of a random experiment.</p>
 </div>
 </div>
 <p>Next, we need to be able to assign probabilities to events. This is done by introducing a probability measure.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -265,7 +309,7 @@ Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A <span class="math inline">\(\text{Pr}(\cdot)\)</span> is a function mapping subsets of <span class="math inline">\(\Omega\)</span> to real numbers, satisfying:</p>
+<p>A <strong>probability measure</strong> <span class="math inline">\(\text{Pr}(\cdot)\)</span> is a function mapping subsets of <span class="math inline">\(\Omega\)</span> to real numbers, satisfying:</p>
 <ul>
 <li><span class="math inline">\(\text{Pr}(\Omega) = 1\)</span>.</li>
 <li><span class="math inline">\(0 \le \text{Pr}(A) \le 1\)</span> for all <span class="math inline">\(A \subset \Omega\)</span>.</li>
@@ -275,7 +319,7 @@ Definition
 </div>
 </div>
 <p>In the case of countable <span class="math inline">\(\Omega\)</span> we can define <span class="math inline">\(\text{Pr}(\cdot)\)</span> for all subsets, while if the cardinality is larger we have to restrict attention to certain subsets, called measuarble <span class="citation" data-cites="DurretProbBook">(<a href="references.html#ref-DurretProbBook" role="doc-biblioref">Durret 2004</a>)</span>.</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout callout-style-simple callout-caution no-icon callout-titled" title="Example">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -296,7 +340,7 @@ X =
 \end{cases}
 \end{equation*}\]</span></p>
 <p>More generally:</p>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -306,11 +350,255 @@ Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A function <span class="math inline">\(X(\omega): \Omega \rightarrow \bar{\mathbb{R}}\)</span> is called a <em>random variable</em> (r.v.).</p>
+<p>A function <span class="math inline">\(X(\omega): \Omega \rightarrow \bar{\mathbb{R}}\)</span> that maps events to the extended real line is called a <strong>random variable (r.v.)</strong>.</p>
 </div>
 </div>
 <p>A fully formal defition of a random variable involves a concept of measurability, which we would like to avoid defining at this point.</p>
 <p>Later in the notes, we will see random variables satisfying <span class="math inline">\(\text{Pr}(X = \infty) &gt; 0\)</span>. Hence, we map <span class="math inline">\(\Omega\)</span> to <span class="math inline">\(\bar{\mathbb{R}} = \mathbb{R}\bigcup\{\pm\infty\}\)</span>.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> in <span class="math inline">\(\Omega\)</span> we define <strong>conditional probability</strong> as <span class="math display">\[\begin{equation*}
+\text{Pr}\left(B \,|\,A\right) = \frac{\text{Pr}\left(A \bigcap B \right)}{\text{Pr}\left(A \right)}.
+\end{equation*}\]</span> If <span class="math inline">\(\text{Pr}\left(B \,|\,A\right) = \text{Pr}\left(B \right)\)</span> we say that the <strong>events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent</strong>, which together with the formula above implies that <span class="math inline">\(\text{Pr}\left(A \bigcap B \right) = \text{Pr}\left(A \right) \times \text{Pr}\left(B \right)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Two <strong>r.v.s <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are called independent</strong> if the events <span class="math inline">\(\{X \in A\}\)</span> and <span class="math inline">\(\{Y \in B\}\)</span> are independent for all sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A sequence <span class="math inline">\(X_1, \dots X_n\)</span> of random variables is called <strong>iid (independent and identically distributed)</strong> if they are mutually independent and have the same distribution.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon callout-titled" title="Example: Bernoulli r.v.">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: Bernoulli r.v.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Random variable <span class="math inline">\(X \in \{0,1\}\)</span> with <span class="math inline">\(\text{Pr}\left(X=1 \right)=p\)</span>, <span class="math inline">\(\text{Pr}\left(X=0 \right)=1-p\)</span> for <span class="math inline">\(0 \le p \le 1\)</span> is called a <strong>Bernoulli</strong> random variable with parameter (or success probability) <span class="math inline">\(p\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon callout-titled" title="Example: Binomial r.v.">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: Binomial r.v.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(X_1,\dots,X_n\)</span> be <span class="math inline">\(n\)</span> independent <span class="math inline">\(\text{Bernoulli}(p)\)</span> random variables. Then the number of successes <span class="math inline">\(S_n = \sum_{i=1}^n X_i\)</span> is called a <strong>binomial r.v.</strong> with <span class="math display">\[\begin{equation*}
+  \text{Pr}\left(S_n=k \right) = {n \choose k} p^k (1-p)^{n-k}, k = 0,\dots, n.
+  \end{equation*}\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon callout-titled" title="Example: Geometric r.v.">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: Geometric r.v.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(X_1, X_2, \dots\)</span> be and infinite number of independent <span class="math inline">\(\text{Bernoulli}(p)\)</span> random variables and <span class="math inline">\(N = \min\{n: X_n=1\}\)</span> be the number of trials until the first success occurs, including the successful trial. Then <span class="math display">\[\begin{equation*}
+    \text{Pr}\left(N=n \right) = (1-p)^{n-1}p  \text{ for } n=1,2,\dots
+    \end{equation*}\]</span></p>
+</div>
+</div>
+<p>Note that there is an alternative definition of the geometric distribution does not count the successful trial so that <span class="math inline">\(\text{Pr}\left(N=n \right) = (1-p)^np \text{ for } n=0,1,\dots\)</span></p>
+<p>We defined all discrete random variables above using probabilities of <span class="math inline">\(X\)</span> taking a particular value. A function that assigns probabilities to random variable values is called a <strong>probability mass function</strong>. However, a more general way to define random variables is by specifying a <strong>cumulative distribution function</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(F(x) = \text{Pr}\left(X \le x \right)\)</span> is called the <strong>cumulative distribution function (cdf)</strong> of <span class="math inline">\(X\)</span>.</p>
+</div>
+</div>
+<p>Properties of cdf:</p>
+<ol type="1">
+<li><span class="math inline">\(0 \le F(x) \le 1\)</span>,</li>
+<li><span class="math inline">\(F(x) \le F(y)\)</span> for <span class="math inline">\(x \le y\)</span>,</li>
+<li><span class="math inline">\(\lim_{x \rightarrow y^{+}} F(x) = F(y)\)</span> (<span class="math inline">\(F(x)\)</span> is right-continuous),</li>
+<li><span class="math inline">\(\lim_{x \rightarrow -\infty} F(x) = \text{Pr}\left(X=-\infty \right)\)</span> (usually <span class="math inline">\(=0\)</span>),</li>
+<li><span class="math inline">\(\lim_{x \rightarrow \infty} F(x) = 1-\text{Pr}\left(X=\infty \right)\)</span> (usually <span class="math inline">\(=1\)</span>),</li>
+<li><span class="math inline">\(\text{Pr}\left(X=x \right) = F(x) - F(x-)\)</span> where <span class="math inline">\(F(x-) = \lim_{y \uparrow x} F(y)\)</span>.</li>
+</ol>
+<div class="callout callout-style-simple callout-caution no-icon callout-titled" title="Example: Discrete uniform random variable">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: Discrete uniform random variable
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a random variable <span class="math inline">\(U\)</span>, uniformly distributed over <span class="math inline">\(\{1,2,\dots,n\}\)</span>, its cdf is given by <span class="math display">\[\begin{equation*}
+  F(x) =
+  \begin{cases}
+  0 &amp;\text{ if } x &lt; 1,\\
+1/n &amp;\text { if } 1 \le x &lt; 2,\\
+  2/n &amp;\text { if } 2 \le x &lt; 3,\\
+  &amp;\vdots\\
+(n-1)/n &amp;\text { if } n-1 \le x &lt; n,\\
+  1 &amp;\text{ if } x \ge n.
+  \end{cases}
+  \end{equation*}\]</span> The probability mass function and cdf of U, with <span class="math inline">\(n=10\)</span>, are shown in <a href="#fig-discr-unif-pdf-cdf" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>, which also contains the probability mass function and cdf of a geometric random variable.</p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-discr-unif-pdf-cdf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-discr-unif-pdf-cdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="prob_refresh_files/figure-html/fig-discr-unif-pdf-cdf-1.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-discr-unif-pdf-cdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Probability mass function (pmf) and cumulative distribution functions (cdf) for the discrete uniform random variable over the integer set <span class="math inline">\(\{1,2,\dots,10\}\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>my.s.prob<span class="ot">=</span><span class="fl">0.2</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">14</span>), <span class="fu">dgeom</span>(<span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">14</span>),<span class="at">prob=</span>my.s.prob), <span class="at">type=</span><span class="st">"h"</span>, <span class="at">xlab=</span><span class="st">"X"</span>, <span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Geometric pmf"</span>, <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">14</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="prob_refresh_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="dv">0</span><span class="sc">:</span><span class="dv">14</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cdf<span class="ot">&lt;-</span><span class="fu">pgeom</span>(x,<span class="at">prob=</span>my.s.prob)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>leftPointX <span class="ot">=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,x) </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>leftPointY <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,cdf)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>rightPointX <span class="ot">=</span> <span class="fu">c</span>(x,<span class="fl">14.5</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>rightPointY <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, cdf)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="at">type=</span><span class="st">"n"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">14.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="at">xlab=</span><span class="st">"X"</span>, <span class="at">ylab=</span><span class="st">""</span>, <span class="at">main=</span><span class="st">"Geometric cdf"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(leftPointX, leftPointY, rightPointX<span class="fl">-0.2</span>, rightPointY,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,<span class="fu">c</span>(<span class="dv">0</span>,cdf[<span class="sc">-</span><span class="dv">15</span>]), <span class="at">cex=</span><span class="fl">1.3</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,cdf, <span class="at">cex=</span><span class="fl">1.3</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="prob_refresh_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#par(mfrow=c(2,2), cex.lab=1.4, cex.axis=1.4, cex.main=1.4)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">type=</span><span class="st">"n"</span>, <span class="at">main=</span><span class="st">"Continuous uniform pdf"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">xlab=</span><span class="st">"U"</span>, <span class="at">ylab=</span><span class="st">"Density"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="fl">0.05</span>,<span class="dv">0</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="fl">1.05</span>,<span class="dv">0</span>,<span class="fl">1.5</span>,<span class="dv">0</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">cex=</span><span class="fl">1.3</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">cex=</span><span class="fl">1.3</span>, <span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="prob_refresh_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">type=</span><span class="st">"n"</span>, <span class="at">main=</span><span class="st">"Continuous uniform cdf"</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">xlab=</span><span class="st">"U"</span>, <span class="at">ylab=</span><span class="st">"Probability"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="fl">1.5</span>,<span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="prob_refresh_files/figure-html/unnamed-chunk-1-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x.grid <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>my.lambda <span class="ot">=</span> <span class="fl">2.4</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x.grid, <span class="fu">dexp</span>(x.grid, <span class="at">rate=</span>my.lambda), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">main=</span><span class="st">"Exponential pdf"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">xlab=</span><span class="st">"X"</span>, <span class="at">ylab=</span><span class="st">"Density"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="prob_refresh_files/figure-html/unnamed-chunk-1-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x.grid, <span class="fu">pexp</span>(x.grid, <span class="at">rate=</span>my.lambda), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">main=</span><span class="st">"Exponential cdf"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">xlab=</span><span class="st">"X"</span>, <span class="at">ylab=</span><span class="st">"Probability"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.0</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="prob_refresh_files/figure-html/unnamed-chunk-1-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="expectations" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="expectations"><span class="header-section-number">2.2</span> Expectations</h2>
+</section>
+<section id="limit-theorems" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="limit-theorems"><span class="header-section-number">2.3</span> Limit Theorems</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -318,6 +606,7 @@ Definition
 Durret, R. 2004. <em>Probability: Theory and Examples</em>. Third. Duxbury Press.
 </div>
 </div>
+</section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
@@ -753,8 +1042,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./stat_refresh.html" class="pagination-link" aria-label="Statistics Refresher">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Refresher</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./dtmc_background.html" class="pagination-link" aria-label="Discrete-Time Markov Chain Background">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete-Time Markov Chain Background</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

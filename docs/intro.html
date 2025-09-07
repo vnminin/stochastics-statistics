@@ -175,14 +175,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./stat_refresh.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Refresher</span></span></a>
+  <a href="./dtmc_background.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete-Time Markov Chain Background</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dtmc_background.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete-Time Markov Chain Background</span></span></a>
+  <a href="./stat_refresh.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Statistics Refresher</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -359,8 +359,7 @@ From Gani's"The Craft of Probabilistic Modelling", Springer 1986. p63
 <p>The modern stochastic epidemic theory was essentially created by Norman T. J. Bailey, an English statistician who spent most of his career at Oxford and the World Health Organization in Geneva <span class="citation" data-cites="armitage2009">(<a href="references.html#ref-armitage2009" role="doc-biblioref">Armitage and Bithell 2009</a>)</span>.</p>
 </div>
 </div>
-<p>Consider a population of <span class="math inline">\(N\)</span> individuals. Let <span class="math inline">\(I_t\)</span> be the number of individuals infected with a pathogen (e.g., influenza virus), <span class="math inline">\(S_t\)</span> be the number of susceptible individuals, and <span class="math inline">\(R_t\)</span> be the number of recovered or removed invividuals.</p>
-<p>Assuming that infected individuals become infected immediately once infected and setting an initial condition for the system (e.g., <span class="math inline">\(I_0=1\)</span>, <span class="math inline">\(S_0= N-1\)</span>, and <span class="math inline">\(R_t=0\)</span>), we would like to model the state of the epidemic, <span class="math inline">\((I_t, S_t, R_t)\)</span> as a continuous-time stochastic process. We further assume that recovered individuals stay recovered forever, the system is closed and that the population size stays constant: <span class="math inline">\(I_t  + S_t + R_t = N\)</span>. This model is called an SIR model in infectious disease epidemiology.</p>
+<p>Consider a population of <span class="math inline">\(N\)</span> individuals. Let <span class="math inline">\(I_t\)</span> be the number of individuals infected with a pathogen (e.g., influenza virus), <span class="math inline">\(S_t\)</span> be the number of susceptible individuals, and <span class="math inline">\(R_t\)</span> be the number of recovered or removed invividuals. Assuming that infected individuals become infected immediately once infected and setting an initial condition for the system (e.g., <span class="math inline">\(I_0=1\)</span>, <span class="math inline">\(S_0= N-1\)</span>, and <span class="math inline">\(R_t=0\)</span>), we would like to model the state of the epidemic, <span class="math inline">\((I_t, S_t, R_t)\)</span> as a continuous-time stochastic process. We further assume that recovered individuals stay recovered forever, the system is closed and that the population size stays constant: <span class="math inline">\(I_t  + S_t + R_t = N\)</span>. Transmission and recovery events happen at random times; only one event is allowed to happen instanteously at a particular time. The rates are constant across time. We will be able to complete the mathematical construction of this process when we get to continuous-time Markov chains in <a href="ctmc_background.html" class="quarto-xref"><span>Chapter 6</span></a>. This model is called an SIR model in infectious disease epidemiology.</p>
 <div id="fig-sir-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sir-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">

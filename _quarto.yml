@@ -12,8 +12,8 @@ book:
     - index.qmd
     - intro.qmd
     - prob_refresh.qmd
-    - stat_refresh.qmd
     - dtmc_background.qmd
+    - stat_refresh.qmd
     - dtmc_stat.qmd
     - ctmc_background.qmd
     - ctmc_stat.qmd

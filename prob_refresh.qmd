@@ -5,18 +5,17 @@
 # Probability Refresher
 
 Here, we review some probability concepts that will be used repeatedly in the subsequent chapters. Material here succinctly covers what students typically see in a mathematically rigorous class on probability theory. 
-In US, such classes are usually offered by Mathematics and Statistics departments. 
+
+## Events, Probabilities, and Random Variables 
 
 We assume that we can assign probabilities to *events* --- outcomes of a random experiment. 
-For example, tossing a coin results in one of two possible events: H =``heads" and T=``tails." 
-More formally, we define *events* as certain subsets of some abstract space. 
+For example, tossing a coin results in one of two possible events: H ="heads" and T="tails." 
+More formally, we define **events** as certain subsets of some abstract space. 
 
 
-::: {.callout-note icon=false appearance="simple"}
+::: {.callout-note  icon=false appearance="simple" title="Definition"}
 
-## Definition
-
-The *state space*[^1] $\Omega$ is a collection of all possible outcomes of a random experiment.
+The **s*tate space**[^1] $\Omega$ is a collection of all possible outcomes of a random experiment.
 
 :::
 
@@ -26,11 +25,9 @@ The *state space*[^1] $\Omega$ is a collection of all possible outcomes of a ran
 
 Next, we need to be able to assign probabilities to events. This is done by introducing a probability measure.
 
-::: {.callout-note icon=false appearance="simple"}
+::: {.callout-note  icon=false appearance="simple" title="Definition"}
 
-## Definition
-
- A \textit{probability measure} $\text{Pr}(\cdot)$ is a function mapping subsets of $\Omega$ to real numbers, 
+ A **probability measure** $\text{Pr}(\cdot)$ is a function mapping subsets of $\Omega$ to real numbers, 
   satisfying:
 
   - $\text{Pr}(\Omega) = 1$.
@@ -42,9 +39,7 @@ Next, we need to be able to assign probabilities to events. This is done by intr
 
  In the case of countable $\Omega$ we can define $\text{Pr}(\cdot)$ for all subsets, while if the cardinality is larger we have to restrict attention to certain subsets, called measuarble [@DurretProbBook].
 
-::: {.callout-note icon=false appearance="simple"}
-
-## Example
+::: {.callout-caution icon=false appearance="simple" title="Example"}
 
   Let $\Omega = \{1,2,\dots,n\}$, we  define $\prob{A} = |A|/n$, where $|A|$ is the number of elements in $A \in \Omega$. For example, 
   if $n=10$, then $\prob{\{1\}} = 0.1$ and $\prob{\{2,9,10\}} = 0.3$.
@@ -62,11 +57,9 @@ X =
 
 More generally:
 
-::: {.callout-note icon=false appearance="simple"}
+::: {.callout-note  icon=false appearance="simple" title="Definition"}
 
-## Definition
-
-  A function $X(\omega): \Omega \rightarrow \bar{\mathbb{R}}$ is called a *random variable* (r.v.).
+  A function $X(\omega): \Omega \rightarrow \bar{\mathbb{R}}$ that maps events to the extended real line is called a **random variable (r.v.)**.
 
 :::
 
@@ -74,3 +67,181 @@ A fully formal defition of a random variable involves a concept of measurability
 
 Later in the notes, we will see random variables satisfying $\text{Pr}(X = \infty) > 0$. 
 Hence, we map $\Omega$ to $\bar{\mathbb{R}} = \mathbb{R}\bigcup\{\pm\infty\}$.
+
+::: {.callout-note icon=false appearance="simple" title="Definition"}
+For events $A$ and $B$ in $\Omega$ we define **conditional probability** as
+\begin{equation*}
+\cprob{B}{A} = \frac{\prob{A \bigcap B}}{\prob{A}}.
+\end{equation*}
+If  $\cprob{B}{A} = \prob{B}$ we say that the **events $A$ and $B$ are independent**, which together with the formula above 
+implies that $\prob{A \bigcap B} = \prob{A} \times \prob{B}$.
+:::
+
+::: {.callout-note icon=false appearance="simple" title="Definition"}
+Two **r.v.s $X$ and $Y$ are called independent** if the events $\{X \in A\}$ and $\{Y \in B\}$ are independent for all sets $A$ and $B$. 
+:::
+
+::: {.callout-note icon=false appearance="simple" title="Definition"}
+A sequence $X_1, \dots X_n$ of random variables is called **iid (independent and identically distributed)** if they are mutually independent and have the same distribution.
+:::
+
+::: {.callout-caution icon=false appearance="simple" title="Example: Bernoulli r.v."}
+  
+  Random variable $X \in \{0,1\}$ with $\prob{X=1}=p$, $\prob{X=0}=1-p$ for $0 \le p \le 1$ is called a **Bernoulli** random variable with parameter (or success probability) $p$.
+:::
+
+::: {.callout-caution icon=false appearance="simple" title="Example: Binomial r.v."}
+  Let $X_1,\dots,X_n$ be $n$ independent $\text{Bernoulli}(p)$ random variables. Then the number of successes 
+  $S_n = \sum_{i=1}^n X_i$ is called a **binomial r.v.** with 
+  \begin{equation*}
+  \prob{S_n=k} = {n \choose k} p^k (1-p)^{n-k}, k = 0,\dots, n.
+  \end{equation*}
+:::
+
+::: {.callout-caution icon=false appearance="simple" title="Example: Geometric r.v."}
+  Let $X_1, X_2, \dots$ be and infinite number of independent $\text{Bernoulli}(p)$ random variables and 
+  $N = \min\{n: X_n=1\}$ be the number of trials until the first success occurs, including 
+    the successful trial. Then
+    \begin{equation*}
+    \prob{N=n} = (1-p)^{n-1}p  \text{ for } n=1,2,\dots
+    \end{equation*}
+:::
+
+Note that there is an alternative definition of the geometric distribution does not count the successful trial so that $\prob{N=n} = (1-p)^np \text{ for } n=0,1,\dots$
+
+We defined all discrete random variables above using probabilities of $X$ taking a particular value. A function
+that assigns probabilities to random variable values is called a **probability mass function**. However, a more
+general way to define random variables is by specifying a **cumulative distribution function**.
+
+::: {.callout-note title="Definition"}
+$F(x) = \prob{X \le x}$ is called the **cumulative distribution function (cdf)** of $X$.
+:::
+
+Properties of cdf:
+
+1. $0 \le F(x) \le 1$,
+2. $F(x) \le F(y)$ for $x \le y$,
+3. $\lim_{x \rightarrow y^{+}} F(x) = F(y)$ ($F(x)$ is right-continuous),
+4. $\lim_{x \rightarrow -\infty} F(x) = \prob{X=-\infty}$ (usually $=0$),
+5. $\lim_{x \rightarrow \infty} F(x) = 1-\prob{X=\infty}$ (usually $=1$),
+6. $\prob{X=x} = F(x) - F(x-)$ where $F(x-) = \lim_{y \uparrow x} F(y)$.
+
+::: {.callout-caution icon=false appearance="simple" title="Example: Discrete uniform random variable"}
+For a random variable $U$, uniformly distributed over $\{1,2,\dots,n\}$, its cdf is given by
+  \begin{equation*}
+  F(x) = 
+  \begin{cases}
+  0 &\text{ if } x < 1,\\
+ 1/n &\text { if } 1 \le x < 2,\\
+  2/n &\text { if } 2 \le x < 3,\\
+  &\vdots\\
+(n-1)/n &\text { if } n-1 \le x < n,\\
+  1 &\text{ if } x \ge n.
+  \end{cases} 
+  \end{equation*}
+  The probability mass function and cdf of U, with $n=10$, are shown in @fig-discr-unif-pdf-cdf, which also contains the probability mass function and cdf of a geometric random variable.
+:::
+
+
+```{r}
+#| fig-cap: Probability mass function (pmf) and cumulative distribution functions (cdf) for the discrete uniform random variable over the integer set $\{1,2,\dots,10\}$
+#| label: fig-discr-unif-pdf-cdf
+#| echo: false
+#| message: false
+#| warning: false
+#| out.width: 100%
+
+par(mfrow=c(1,2), cex=0.8, mar = c(5, 4, 6, 2) + 0.1)
+plot(c(1:10), rep(1/10,10), type="h", xlab="u", ylab="Probability", main="Discrete uniform pmf", axes=FALSE, ylim=c(0,1), lwd=2)
+axis(1, at=c(1:10))
+axis(2, at=c(0:10)/10)
+box()
+
+leftPointX = c(-0.5, 1:10)
+leftPointY = c(0, c(1:10)/10)
+
+rightPointX = c(1:10, 11.5)
+rightPointY = c(0, c(1:10)/10)
+
+par(mar = c(5, 1, 6, 2) + 0.1)
+
+plot(1,1, type="n", xlim=c(-0.5,11.5), ylim=c(0,1),
+     xlab="u", ylab="", main="Discrete uniform cdf", axes=FALSE)
+segments(leftPointX, leftPointY, rightPointX-0.2, rightPointY, lwd=2)
+points(c(1:10), c(0:9)/10, cex=1.3)
+points(c(1:10), c(0:9)/10+1/10, cex=1.3, pch=19)
+axis(1, at=c(1:10))
+box()
+```
+
+
+
+```{r}
+my.s.prob=0.2
+
+plot(c(0:14), dgeom(c(0:14),prob=my.s.prob), type="h", xlab="X", ylab="", main="Geometric pmf", axes=FALSE, ylim=c(0,1), lwd=2)
+axis(1, at=c(0:14))
+axis(2)
+box()
+
+x<-0:14
+cdf<-pgeom(x,prob=my.s.prob)
+
+leftPointX = c(-0.5,x) 
+leftPointY = c(0,cdf)
+rightPointX = c(x,14.5)
+rightPointY = c(0, cdf)
+plot(1,1,type="n", xlim=c(-0.5,14.5), ylim = c(0,1),xlab="X", ylab="", main="Geometric cdf")
+segments(leftPointX, leftPointY, rightPointX-0.2, rightPointY,lwd=2)
+points(x,c(0,cdf[-15]), cex=1.3)
+points(x,cdf, cex=1.3, pch=19)
+
+
+#par(mfrow=c(2,2), cex.lab=1.4, cex.axis=1.4, cex.main=1.4)
+plot(1, 1, type="n", main="Continuous uniform pdf",
+     axes=FALSE, xlab="U", ylab="Density", ylim=c(0,1), xlim=c(-0.5,1.5), lwd=2)
+segments(0,1,1,1, lwd=2)
+segments(-0.5,0,-0.05,0, lwd=2)
+segments(1.05,0,1.5,0, lwd=2)
+points(c(0,1), c(0,0), cex=1.3)
+points(c(0,1), c(1,1), cex=1.3, pch=19)
+axis(1)
+axis(2)
+box()
+
+
+plot(1, 1, type="n", main="Continuous uniform cdf",
+     axes=FALSE, xlab="U", ylab="Probability", ylim=c(0,1), xlim=c(-0.5,1.5), lwd=2)
+segments(0,0,1,1, lwd=2)
+segments(-0.5,0,0,0, lwd=2)
+segments(1,1,1.5,1, lwd=2)
+axis(1)
+axis(2)
+box()
+
+x.grid = c(0,1:1000)/100
+my.lambda = 2.4
+
+plot(x.grid, dexp(x.grid, rate=my.lambda), type="l", main="Exponential pdf",
+     axes=FALSE, xlab="X", ylab="Density", xlim=c(0,3), lwd=2)
+axis(1)
+axis(2)
+box()
+
+plot(x.grid, pexp(x.grid, rate=my.lambda), type="l", main="Exponential cdf",
+     axes=FALSE, xlab="X", ylab="Probability", ylim=c(0,1.0), xlim=c(0,3), lwd=2)
+axis(1)
+axis(2)
+box()
+```
+
+\caption{Probability mass functions (pmfs) and cumulative distribution functions (cdfs) for the discrete uniform 
+random variable over $\{1,2,\dots,10\}$ and for the geometric random variable with success probability $p = \Sexpr{my.s.prob}$ (top row).
+Probability density functions (pdfs) and cdfs for the continuous uniform random variable over $[0,1]$ and for the exponential random variable 
+with rate parameter $\lambda = 2.4$ (bottom row).}
+
+
+
+## Expectations
+
+## Limit Theorems

@@ -195,8 +195,9 @@ The modern stochastic epidemic theory was essentially created by Norman T. J. Ba
 
 Consider a population of $N$ individuals. Let $I_t$ be the number of individuals infected with a pathogen (e.g., influenza virus), $S_t$ be the number of susceptible individuals, and 
 $R_t$ be the number of recovered or removed invividuals.
- 
-Assuming that infected individuals become infected immediately once infected and setting an initial condition for the system (e.g., $I_0=1$, $S_0= N-1$, and $R_t=0$), we would like to model the state of the epidemic, $(I_t, S_t, R_t)$ as a continuous-time stochastic process. We further assume that recovered individuals stay recovered forever, the system is closed and that the population size stays constant: $I_t  + S_t + R_t = N$. This model is called an SIR model in infectious disease epidemiology.    
+Assuming that infected individuals become infected immediately once infected and setting an initial condition for the system (e.g., $I_0=1$, $S_0= N-1$, and $R_t=0$), we would like to model the state of the epidemic, $(I_t, S_t, R_t)$ as a continuous-time stochastic process. We further assume that recovered individuals stay recovered forever, the system is closed and that the population size stays constant: $I_t  + S_t + R_t = N$. Transmission and recovery events happen at random times; only one event is allowed to happen instanteously at a particular time. The rates are constant across time. 
+We will be able to complete the mathematical construction of this process when we get to continuous-time Markov chains in @sec-ctmc.
+This model is called an SIR model in infectious disease epidemiology.    
 
 ![SIR model cartoon. The plot shows 4 times points (not necessarily evenly spaced) during an epidemic in the population with 10 individuals. 
 Susceptible individuals are shown in blue, infectious individuals are shown in red, and recovered individuals are shown in black.](images/prob_refresh/sir_stick_figures.svg){width=50% #fig-sir-diagram}
