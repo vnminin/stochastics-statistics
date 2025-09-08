@@ -6,21 +6,136 @@
 
 Here, we review some probability concepts that will be used repeatedly in the subsequent chapters. Material here succinctly covers what students typically see in a mathematically rigorous class on probability theory. 
 
-## Events, Probabilities, and Random Variables 
+## Events and their Probabilities 
+
+A **random experiment or process** is one where deterministic prediction is difficult. 
+A coin toss is an example of a random experiment. Random experiments generate **simple events**. 
+For example, if you toss a coin twice, the simple events are: HH, HT, TH, TT, where H = heads and T = tails.
+
+::: {.callout-note  icon=false appearance="simple" title="Definition"}
+
+The **state space**[^1] $\Omega$ is a collection of all possible outcomes of a random experiment.
+:::
+
+
+[^1]: We use the term *state space*, which is frequently used in stochastic processes theory. In probability textbooks the term *sample space* is more common. 
+
+For the tossing a coin twice experiment, the sample space is $S=\{HH, HT, TH, TT\}$.
+
+::: {.callout-note  icon=false appearance="simple" title="Definition"}
+An **event** is any subset of the state space. 
+:::
+
+For the coin-tossing experiment, we can define the following events:
+
+- $A = \text{"at least one H"} \Rightarrow A=\{HH, HT, TH\}$ 
+-  $B = \text{"at most one H"} \Rightarrow B=\{HT, TH, TT\}$
+
+::: {.callout-note  icon=false appearance="simple" title="Definition of event/set arithmetic"}
+* $A \cup B = \{\text{simple events in A or B or both}\}$
+* $A \cap B = \{\text{simple events in both A and B}\}$ 
+* $A^c = \{\text{simple events not in A}\}$
+:::
+
+For the two-coin-tossing example with events A and B:
+
+- $A \cup B = \{HH, HT, TH, TT\} = S$ (the whole state space)
+- $A \cap B = \{HT, TH\}$
+- $A^c = \{TT\}$
+- $B^c = \{HH\}$
+
+
+Since events are sets, it is often useful to visualize them with Venn diagrams. 
+
+```{r}
+#| fig-cap: A Venn diagram showing two events of ,  $A=\{HH, HT, TH\}$ and $B=\{HT, TH, TT\}$, and their intersection $A \cup B = \{HT, TH\}$.
+#| label: fig-venn-coin-toss
+#| echo: false
+#| message: false
+#| warning: false
+#| out.width: 60%
+
+library(VennDiagram)
+library(grid)
+
+# Define set sizes (these numbers aren't shown but determine circle size/position)
+area1 <- 100
+area2 <- 100
+cross.area <- 50
+
+# Draw a pairwise Venn diagram without printing default labels/numbers
+venn.plot <- draw.pairwise.venn(
+  area1 = area1,
+  area2 = area2,
+  cross.area = cross.area,
+  category = c("", ""),         # leave outer category labels empty
+  fill = c("lightblue", "pink"),
+  print.mode = "none"           # suppress numeric labels
+)
+
+# Render the (empty) diagram
+grid.draw(venn.plot)
+
+# Add custom set labels inside the circles.
+# Adjust the x and y coordinates as needed.
+grid.text("HH", x = 0.2, y = 0.5, gp = gpar(fontsize = 16, col = "black"))
+grid.text("TT", x = 0.85, y = 0.5, gp = gpar(fontsize = 16, col = "black"))
+# Add intersection label centered between the circles
+grid.text("TH", x = 0.5, y = 0.65, gp = gpar(fontsize = 16, col = "black"))
+grid.text("HT", x = 0.5, y = 0.35, gp = gpar(fontsize = 16, col = "black"))
+```
+
+The **De Morgan Laws** allow us to take complements of unions and intersections of sets/events:
+
+- $(A \cup B)^c = A^c \cap B^c$
+- $(A \cap B)^c = A^c \cup B^c$ 
+
+
+If events $A$ and $B$ cannot happen at the same time, they are called **mutually exclusive**. In set notations this means that their intersection is an empty set: $A \cap B = \emptyset$.
+
+
+## Probability axioms
+
+[cite_start]**Probability** is a function that maps events to real numbers between 0 and 1[cite: 110, 114, 115, 116, 117, 118].
+
+The probability axioms are:
+1.  [cite_start]For any event $A \subset S$, $0 \le P(A) \le 1$[cite: 121, 122, 125, 126].
+2.  [cite_start]$P(S) = 1$[cite: 122].
+3.  [cite_start]For mutually exclusive events A and B ($A \cap B = \emptyset$), $P(A \cup B) = P(A) + P(B)$[cite: 127].
+
+[cite_start]The **General Addition Rule** is: $P(A \cup B) = P(A) + P(B) - P(A \cap B)$[cite: 127].
+
+[cite_start]The **Law of Complementary Events** is: $P(A^c) = 1 - P(A)$[cite: 132].
+
+### Example: practicing addition rule
+
+Suppose we know the following probabilities for students in a Stats 67 class:
+* [cite_start]Probability of being right-handed: $P(A) = 0.8$ [cite: 144]
+* [cite_start]Probability of being a CS major: $P(B) = 0.87$ [cite: 144]
+* [cite_start]Probability of being both right-handed and a CS major: $P(A \cap B) = 0.75$ [cite: 144, 145]
+
+[cite_start]What is the probability that a student is either right-handed, a CS major, or both? [cite: 146, 147, 148, 149, 150, 151]
+
+We can use the addition rule:
+[cite_start]$P(A \cup B) = P(A) + P(B) - P(A \cap B)$ [cite: 159]
+[cite_start]$P(A \cup B) = 0.8 + 0.87 - 0.75 = 0.92$ [cite: 160]
+
+[cite_start]**Next question:** What is the probability that a Stats 67 student is a left-handed CS major? [cite: 161, 162, 163, 164, 165, 166, 167]
+[cite_start]We need to find $P(A^c \cap B)$, where $A^c$ represents a student who is not right-handed (i.e., left-handed)[cite: 169, 170].
+
+[cite_start]A useful trick to remember is that for any events A and B, we can write $B = (A^c \cap B) \cup (A \cap B)$[cite: 175]. Since $(A^c \cap B)$ and $(A \cap B)$ are disjoint, we can apply the addition rule:
+[cite_start]$P(B) = P(A^c \cap B) + P(A \cap B)$ [cite: 186]
+
+Now we can solve for $P(A^c \cap B)$:
+[cite_start]$P(A^c \cap B) = P(B) - P(A \cap B)$ [cite: 193]
+[cite_start]$P(A^c \cap B) = 0.87 - 0.75 = 0.12$ [cite: 193, 195]
 
 We assume that we can assign probabilities to *events* --- outcomes of a random experiment. 
 For example, tossing a coin results in one of two possible events: H ="heads" and T="tails." 
 More formally, we define **events** as certain subsets of some abstract space. 
 
 
-::: {.callout-note  icon=false appearance="simple" title="Definition"}
 
-The **s*tate space**[^1] $\Omega$ is a collection of all possible outcomes of a random experiment.
-
-:::
-
-
-[^1]: We use the term *state space*, which is frequently used in stochastic processes theory. In probability textbooks the term *sample space* is more common. 
 
 
 Next, we need to be able to assign probabilities to events. This is done by introducing a probability measure.

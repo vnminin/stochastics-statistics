@@ -253,9 +253,13 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#events-probabilities-and-random-variables" id="toc-events-probabilities-and-random-variables" class="nav-link active" data-scroll-target="#events-probabilities-and-random-variables"><span class="header-section-number">2.1</span> Events, Probabilities, and Random Variables</a></li>
-  <li><a href="#expectations" id="toc-expectations" class="nav-link" data-scroll-target="#expectations"><span class="header-section-number">2.2</span> Expectations</a></li>
-  <li><a href="#limit-theorems" id="toc-limit-theorems" class="nav-link" data-scroll-target="#limit-theorems"><span class="header-section-number">2.3</span> Limit Theorems</a></li>
+  <li><a href="#events-and-their-probabilities" id="toc-events-and-their-probabilities" class="nav-link active" data-scroll-target="#events-and-their-probabilities"><span class="header-section-number">2.1</span> Events and their Probabilities</a></li>
+  <li><a href="#probability-axioms" id="toc-probability-axioms" class="nav-link" data-scroll-target="#probability-axioms"><span class="header-section-number">2.2</span> Probability axioms</a>
+  <ul class="collapse">
+  <li><a href="#example-practicing-addition-rule" id="toc-example-practicing-addition-rule" class="nav-link" data-scroll-target="#example-practicing-addition-rule"><span class="header-section-number">2.2.1</span> Example: practicing addition rule</a></li>
+  </ul></li>
+  <li><a href="#expectations" id="toc-expectations" class="nav-link" data-scroll-target="#expectations"><span class="header-section-number">2.3</span> Expectations</a></li>
+  <li><a href="#limit-theorems" id="toc-limit-theorems" class="nav-link" data-scroll-target="#limit-theorems"><span class="header-section-number">2.4</span> Limit Theorems</a></li>
   </ul>
 </nav>
     </div>
@@ -282,9 +286,9 @@ window.Quarto = {
 
 
 <p>Here, we review some probability concepts that will be used repeatedly in the subsequent chapters. Material here succinctly covers what students typically see in a mathematically rigorous class on probability theory.</p>
-<section id="events-probabilities-and-random-variables" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="events-probabilities-and-random-variables"><span class="header-section-number">2.1</span> Events, Probabilities, and Random Variables</h2>
-<p>We assume that we can assign probabilities to <em>events</em> — outcomes of a random experiment. For example, tossing a coin results in one of two possible events: H =“heads” and T=“tails.” More formally, we define <strong>events</strong> as certain subsets of some abstract space.</p>
+<section id="events-and-their-probabilities" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="events-and-their-probabilities"><span class="header-section-number">2.1</span> Events and their Probabilities</h2>
+<p>A <strong>random experiment or process</strong> is one where deterministic prediction is difficult. A coin toss is an example of a random experiment. Random experiments generate <strong>simple events</strong>. For example, if you toss a coin twice, the simple events are: HH, HT, TH, TT, where H = heads and T = tails.</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -295,9 +299,89 @@ Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The **s*tate space**<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math inline">\(\Omega\)</span> is a collection of all possible outcomes of a random experiment.</p>
+<p>The <strong>state space</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math inline">\(\Omega\)</span> is a collection of all possible outcomes of a random experiment.</p>
 </div>
 </div>
+<p>For the tossing a coin twice experiment, the sample space is <span class="math inline">\(S=\{HH, HT, TH, TT\}\)</span>.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An <strong>event</strong> is any subset of the state space.</p>
+</div>
+</div>
+<p>For the coin-tossing experiment, we can define the following events:</p>
+<ul>
+<li><span class="math inline">\(A = \text{"at least one H"} \Rightarrow A=\{HH, HT, TH\}\)</span></li>
+<li><span class="math inline">\(B = \text{"at most one H"} \Rightarrow B=\{HT, TH, TT\}\)</span></li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition of event/set arithmetic">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition of event/set arithmetic
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(A \cup B = \{\text{simple events in A or B or both}\}\)</span></li>
+<li><span class="math inline">\(A \cap B = \{\text{simple events in both A and B}\}\)</span></li>
+<li><span class="math inline">\(A^c = \{\text{simple events not in A}\}\)</span></li>
+</ul>
+</div>
+</div>
+<p>For the two-coin-tossing example with events A and B:</p>
+<ul>
+<li><span class="math inline">\(A \cup B = \{HH, HT, TH, TT\} = S\)</span> (the whole state space)</li>
+<li><span class="math inline">\(A \cap B = \{HT, TH\}\)</span></li>
+<li><span class="math inline">\(A^c = \{TT\}\)</span></li>
+<li><span class="math inline">\(B^c = \{HH\}\)</span></li>
+</ul>
+<p>Since events are sets, it is often useful to visualize them with Venn diagrams.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-venn-coin-toss" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-venn-coin-toss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="prob_refresh_files/figure-html/fig-venn-coin-toss-1.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-venn-coin-toss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: A Venn diagram showing two events of , <span class="math inline">\(A=\{HH, HT, TH\}\)</span> and <span class="math inline">\(B=\{HT, TH, TT\}\)</span>, and their intersection <span class="math inline">\(A \cup B = \{HT, TH\}\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <strong>De Morgan Laws</strong> allow us to take complements of unions and intersections of sets/events:</p>
+<ul>
+<li><span class="math inline">\((A \cup B)^c = A^c \cap B^c\)</span></li>
+<li><span class="math inline">\((A \cap B)^c = A^c \cup B^c\)</span></li>
+</ul>
+<p>If events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> cannot happen at the same time, they are called <strong>mutually exclusive</strong>. In set notations this means that their intersection is an empty set: <span class="math inline">\(A \cap B = \emptyset\)</span>.</p>
+</section>
+<section id="probability-axioms" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="probability-axioms"><span class="header-section-number">2.2</span> Probability axioms</h2>
+<p>[cite_start]<strong>Probability</strong> is a function that maps events to real numbers between 0 and 1[cite: 110, 114, 115, 116, 117, 118].</p>
+<p>The probability axioms are: 1. [cite_start]For any event <span class="math inline">\(A \subset S\)</span>, <span class="math inline">\(0 \le P(A) \le 1\)</span>[cite: 121, 122, 125, 126]. 2. [cite_start]<span class="math inline">\(P(S) = 1\)</span>[cite: 122]. 3. [cite_start]For mutually exclusive events A and B (<span class="math inline">\(A \cap B = \emptyset\)</span>), <span class="math inline">\(P(A \cup B) = P(A) + P(B)\)</span>[cite: 127].</p>
+<p>[cite_start]The <strong>General Addition Rule</strong> is: <span class="math inline">\(P(A \cup B) = P(A) + P(B) - P(A \cap B)\)</span>[cite: 127].</p>
+<p>[cite_start]The <strong>Law of Complementary Events</strong> is: <span class="math inline">\(P(A^c) = 1 - P(A)\)</span>[cite: 132].</p>
+<section id="example-practicing-addition-rule" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="example-practicing-addition-rule"><span class="header-section-number">2.2.1</span> Example: practicing addition rule</h3>
+<p>Suppose we know the following probabilities for students in a Stats 67 class: * [cite_start]Probability of being right-handed: <span class="math inline">\(P(A) = 0.8\)</span> [cite: 144] * [cite_start]Probability of being a CS major: <span class="math inline">\(P(B) = 0.87\)</span> [cite: 144] * [cite_start]Probability of being both right-handed and a CS major: <span class="math inline">\(P(A \cap B) = 0.75\)</span> [cite: 144, 145]</p>
+<p>[cite_start]What is the probability that a student is either right-handed, a CS major, or both? [cite: 146, 147, 148, 149, 150, 151]</p>
+<p>We can use the addition rule: [cite_start]<span class="math inline">\(P(A \cup B) = P(A) + P(B) - P(A \cap B)\)</span> [cite: 159] [cite_start]<span class="math inline">\(P(A \cup B) = 0.8 + 0.87 - 0.75 = 0.92\)</span> [cite: 160]</p>
+<p>[cite_start]<strong>Next question:</strong> What is the probability that a Stats 67 student is a left-handed CS major? [cite: 161, 162, 163, 164, 165, 166, 167] [cite_start]We need to find <span class="math inline">\(P(A^c \cap B)\)</span>, where <span class="math inline">\(A^c\)</span> represents a student who is not right-handed (i.e., left-handed)[cite: 169, 170].</p>
+<p>[cite_start]A useful trick to remember is that for any events A and B, we can write <span class="math inline">\(B = (A^c \cap B) \cup (A \cap B)\)</span>[cite: 175]. Since <span class="math inline">\((A^c \cap B)\)</span> and <span class="math inline">\((A \cap B)\)</span> are disjoint, we can apply the addition rule: [cite_start]<span class="math inline">\(P(B) = P(A^c \cap B) + P(A \cap B)\)</span> [cite: 186]</p>
+<p>Now we can solve for <span class="math inline">\(P(A^c \cap B)\)</span>: [cite_start]<span class="math inline">\(P(A^c \cap B) = P(B) - P(A \cap B)\)</span> [cite: 193] [cite_start]<span class="math inline">\(P(A^c \cap B) = 0.87 - 0.75 = 0.12\)</span> [cite: 193, 195]</p>
+<p>We assume that we can assign probabilities to <em>events</em> — outcomes of a random experiment. For example, tossing a coin results in one of two possible events: H =“heads” and T=“tails.” More formally, we define <strong>events</strong> as certain subsets of some abstract space.</p>
 <p>Next, we need to be able to assign probabilities to events. This is done by introducing a probability measure.</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
@@ -483,7 +567,7 @@ Example: Discrete uniform random variable
 (n-1)/n &amp;\text { if } n-1 \le x &lt; n,\\
   1 &amp;\text{ if } x \ge n.
   \end{cases}
-  \end{equation*}\]</span> The probability mass function and cdf of U, with <span class="math inline">\(n=10\)</span>, are shown in <a href="#fig-discr-unif-pdf-cdf" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>, which also contains the probability mass function and cdf of a geometric random variable.</p>
+  \end{equation*}\]</span> The probability mass function and cdf of U, with <span class="math inline">\(n=10\)</span>, are shown in <a href="#fig-discr-unif-pdf-cdf" class="quarto-xref">Figure&nbsp;<span>2.2</span></a>, which also contains the probability mass function and cdf of a geometric random variable.</p>
 </div>
 </div>
 <div class="cell">
@@ -494,7 +578,7 @@ Example: Discrete uniform random variable
 <img src="prob_refresh_files/figure-html/fig-discr-unif-pdf-cdf-1.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-discr-unif-pdf-cdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: Probability mass function (pmf) and cumulative distribution functions (cdf) for the discrete uniform random variable over the integer set <span class="math inline">\(\{1,2,\dots,10\}\)</span>
+Figure&nbsp;2.2: Probability mass function (pmf) and cumulative distribution functions (cdf) for the discrete uniform random variable over the integer set <span class="math inline">\(\{1,2,\dots,10\}\)</span>
 </figcaption>
 </figure>
 </div>
@@ -594,11 +678,12 @@ Figure&nbsp;2.1: Probability mass function (pmf) and cumulative distribution fun
 </div>
 </div>
 </section>
-<section id="expectations" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="expectations"><span class="header-section-number">2.2</span> Expectations</h2>
 </section>
-<section id="limit-theorems" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="limit-theorems"><span class="header-section-number">2.3</span> Limit Theorems</h2>
+<section id="expectations" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="expectations"><span class="header-section-number">2.3</span> Expectations</h2>
+</section>
+<section id="limit-theorems" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="limit-theorems"><span class="header-section-number">2.4</span> Limit Theorems</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
